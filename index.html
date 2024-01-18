@@ -6,15 +6,16 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Práctica evaluable UF2 - Arrays</title>
 	<script src="js/script.js"></script>
+	<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 	<div id="bbdd">
 		<h2>Bases de datos</h2>
 
-		<button id="pokemons" onclick="createTable('pokemons')">Pokémons</button>
-		<button id="municipios" onclick="createTable('municipios')">Municipios</button>
-		<button id="meteoritos" onclick="createTable('meteoritos')">Meteoritos</button>
-		<button id="movies" onclick="createTable('movies')">Películas</button>
+		<button id="pokemons" onclick="pokemonsTable()">Pokémons</button>
+		<button id="municipios" onclick="municipiosTable()">Municipios</button>
+		<button id="meteoritos" onclick="meteoritosTable()">Meteoritos</button>
+		<button id="movies" onclick="moviesTable()">Películas</button>
 	</div>
 
 	<div id="botones">
@@ -27,6 +28,8 @@
 		<button id="media" onclick="calcula()">Calcula</button>
 	</div>
 
-	<div id="resultat"></div>
+	<div id="resultat">
+
+	</div>
 </body>
 </html>

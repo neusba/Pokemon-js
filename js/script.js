@@ -73,6 +73,70 @@ function calcula() {
 
 }
 
-function createTable() {
-    
+function pokemonsTable() {
+  let cajas = '';
+  let contenedor = document.getElementById('resultat');
+
+  for (let i=0; i<pokemonsData.length; i++) {
+    cajas += `<div class="box">
+                <img class="img" src=${pokemonsData[i].img}>
+                <div class="specs">
+                  <p class="pSpecs"><span style="font-weight: bold">Id:</span> ${pokemonsData[i].id}</p>
+                  <p class="pSpecs"><span style="font-weight: bold">Name:</span> ${pokemonsData[i].name}</p>
+                  <p class="pSpecs"><span style="font-weight: bold">Weight:</span> ${pokemonsData[i].weight}</p>
+                </div>
+              </div>`
+  }
+  contenedor.innerHTML = cajas;
+}
+
+function municipiosTable() {
+  let cajas = '';
+  let contenedor = document.getElementById('resultat');
+
+  for (let i=0; i<municipiosData.length; i++) {
+    cajas += `<div class="box">
+                <img class="img" src=${municipiosData[i].municipi_escut}>
+                <div class="specs">
+                  <p class="pSpecs"><span style="font-weight: bold">Id:</span> ${municipiosData[i]}</p>
+                  <p class="pSpecs"><span style="font-weight: bold">Name:</span> ${municipiosData[i].municipi_nom}</p>
+                  <p class="pSpecs"><span style="font-weight: bold">INE:</span> ${municipiosData[i].ine}</p>
+                </div>
+              </div>`
+  }
+  contenedor.innerHTML = cajas;
+}
+
+function meteoritosTable() {
+  let cajas = '';
+  let contenedor = document.getElementById('resultat');
+
+  for (let i=0; i<meteoritosData.length; i++) {
+    cajas += `<div class="box">
+                <img class="img" src=${meteoritosData[i].municipi_escut}>
+                <div class="specs">
+                  <p class="pSpecs"><span style="font-weight: bold">Id:</span> ${meteoritosData[i].id}</p>
+                  <p class="pSpecs"><span style="font-weight: bold">Name:</span> ${meteoritosData[i].name}</p>
+                  <p class="pSpecs"><span style="font-weight: bold">Mass:</span> ${meteoritosData[i].mass}</p>
+                </div>
+              </div>`
+  }
+  contenedor.innerHTML = cajas;
+}
+
+function moviesTable() {
+  let cajas = '';
+  let contenedor = document.getElementById('resultat');
+
+  for (let i=0; i<moviesData.length; i++) {
+    cajas += `<div class="box">
+                <img class="img" src=${moviesData[i].url}>
+                <div class="specs">
+                  <p class="pSpecs"><span style="font-weight: bold">Year:</span> ${moviesData[i].year}</p>
+                  <p class="pSpecs"><span style="font-weight: bold">Name:</span> ${moviesData[i].title}</p>
+                  <p class="pSpecs"><span style="font-weight: bold">Rating:</span> ${moviesData[i].rating}</p>
+                </div>
+              </div>`
+  }
+  contenedor.innerHTML = cajas;
 }
