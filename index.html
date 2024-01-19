@@ -5,9 +5,31 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Práctica evaluable UF2 - Arrays</title>
+	<script src="js/script.js"></script>
+	<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-	<div id="resultat"></div>
-	<script src="js/script.js"></script>
+	<div id="bbdd">
+		<h2>Bases de datos</h2>
+
+		<button id="pokemons" onclick="printList(0)">Pokémons</button>
+		<button id="municipios" onclick="printList(1)">Municipios</button>
+		<button id="meteoritos" onclick="printList(2)">Meteoritos</button>
+		<button id="movies" onclick="printList(3)">Películas</button>
+	</div>
+
+	<div id="botones">
+		<h3>Filtros</h3>
+
+		<button id="refresh" onclick="refresh()">Recarga</button>
+		<button id="asc" onclick="orderList('asc')">Orden asc.</button>
+		<button id="desc" onclick="orderList('desc')">Orden desc.</button>
+		<button id="search" onclick="searchList()">Buscador</button>
+		<button id="media" onclick="calcula()">Calcula</button>
+	</div>
+
+	<div id="resultat">
+
+	</div>
 </body>
 </html>
