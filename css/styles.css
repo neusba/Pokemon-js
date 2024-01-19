@@ -9,8 +9,9 @@ body {
 #resultat {
     width: 80vw;
     margin: 3vw;
-    display: grid;
-    grid-template-columns: auto auto auto auto;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .box {
@@ -33,4 +34,13 @@ body {
 .img:hover {
     scale: 1.9;
     transition: 0.3s;
+}
+
+#tabla {
+    border: 1px solid black;
+}
+td {
+    text-align: center;
+}
+tr {
 }

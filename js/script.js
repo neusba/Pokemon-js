@@ -17,15 +17,29 @@ let promiseArrays = Promise.all([
     fetch("js/data/movies.json").then(response => response.json())
 ]).then(([dataPokemon, dataMunicipis, dataMeteorites, dataMovies]) => {
 
-    dataPokemon.pokemon.forEach(dato => pokemonsData.push(dato));
-    dataMunicipis.elements.forEach(dato => municipiosData.push(dato));
-    dataMeteorites.forEach(dato => meteoritosData.push(dato));
-    dataMovies.movies.forEach(dato => moviesData.push(dato));
+    dataPokemon.pokemon.forEach(dato => {
+      let newData = [dato.id, dato.img, dato.name, dato.weight];
+      pokemonsData.push(newData);
+      pokemons.push(dato.name);
+    });
+      
+    dataMunicipis.elements.forEach(dato => {
+      let newData = [dato.ine, dato.municipi_escut, dato.municipi_nom, dato.nombre_habitants];
+      municipiosData.push(newData);
+      municipios.push(dato.municipi_nom);
+    });
 
-    dataPokemon.pokemon.forEach(dato => pokemons.push(dato.name));
-    dataMunicipis.elements.forEach(dato => municipios.push(dato.municipi_nom));
-    dataMeteorites.forEach(dato => meteoritos.push(dato.name));
-    dataMovies.movies.forEach(dato => movies.push(dato.title));
+    dataMeteorites.forEach(dato => {
+      let newData = [dato.id, dato.name, dato.fall, dato.mass];
+      meteoritosData.push(newData);
+      meteoritos.push(dato.name);
+    });
+
+    dataMovies.movies.forEach(dato => {
+      let newData = [dato.year, dato.url, dato.title, dato.rating];
+      moviesData.push(newData);
+      movies.push(dato.title);
+    });
 
     let maxLength = Math.max(pokemons.length, municipios.length, meteoritos.length, movies.length);
     let dades = [];
@@ -46,10 +60,13 @@ let promiseArrays = Promise.all([
 
 // Creamos el array multidimensional una vez la promise que recoge los datos termina
 let multidimensional = [];
+let cabeceras = [];
 
 promiseArrays
-  .then(resultado => {
-    multidimensional = [pokemonsData, municipiosData, meteoritosData, moviesData];
+.then(resultado => {
+  multidimensional = [pokemonsData, municipiosData, meteoritosData, moviesData];
+  // Creamos las cabeceras que iran en cada tabla
+  cabeceras = [['ID', 'Img', 'Name', 'Weight'], ['INE', 'Img', 'Name', 'N.Hab'], ['ID', 'Name', 'Fall', 'Mass'], ['Year', 'Img', 'Title', 'Rating']];         
 
   })
   .catch(error => {
@@ -58,11 +75,16 @@ promiseArrays
 
 /* Funciones de los botones que alteran la tabla */
 function refresh() {
-    location.reload();
+  location.reload();
 }
 
 function orderList(string) {
-
+  if (string == 'asc' || string == 'desc') {
+    // Lógica para ordenar la tabla
+  } else {
+    alert('Parámetro de orden inválido');
+    return;
+  }
 }
 
 function searchList() {
@@ -73,70 +95,30 @@ function calcula() {
 
 }
 
-function pokemonsTable() {
-  let cajas = '';
+function printList(numTable) {
   let contenedor = document.getElementById('resultat');
+  let tablaActual = multidimensional[numTable];
+  let cabeceraActual = cabeceras[numTable];
+  let estructura = `<table id="tabla">
+                      <tr id="cabecera">
+                        <th>${cabeceraActual[0]}</th>
+                        <th>${cabeceraActual[1]}</th>
+                        <th>${cabeceraActual[2]}</th>
+                        <th>${cabeceraActual[3]}</th>
+                      </tr>`;
 
-  for (let i=0; i<pokemonsData.length; i++) {
-    cajas += `<div class="box">
-                <img class="img" src=${pokemonsData[i].img}>
-                <div class="specs">
-                  <p class="pSpecs"><span style="font-weight: bold">Id:</span> ${pokemonsData[i].id}</p>
-                  <p class="pSpecs"><span style="font-weight: bold">Name:</span> ${pokemonsData[i].name}</p>
-                  <p class="pSpecs"><span style="font-weight: bold">Weight:</span> ${pokemonsData[i].weight}</p>
-                </div>
-              </div>`
-  }
-  contenedor.innerHTML = cajas;
-}
+  // Recorremos el array correspondiente para añadir los datos a la tabla
+  let estructuraDatos = '';
 
-function municipiosTable() {
-  let cajas = '';
-  let contenedor = document.getElementById('resultat');
+  tablaActual.forEach(datos => {
+    let nuevosDatos = `<tr>
+                        <td>${datos[0]}</td>
+                        <td><img src="${datos[1]}"></td>
+                        <td>${datos[2]}</td>
+                        <td>${datos[3]}</td>
+                      </tr>`;
+    estructuraDatos += nuevosDatos;
+  })
+  contenedor.innerHTML = estructura + estructuraDatos + '</table>';
 
-  for (let i=0; i<municipiosData.length; i++) {
-    cajas += `<div class="box">
-                <img class="img" src=${municipiosData[i].municipi_escut}>
-                <div class="specs">
-                  <p class="pSpecs"><span style="font-weight: bold">Id:</span> ${municipiosData[i]}</p>
-                  <p class="pSpecs"><span style="font-weight: bold">Name:</span> ${municipiosData[i].municipi_nom}</p>
-                  <p class="pSpecs"><span style="font-weight: bold">INE:</span> ${municipiosData[i].ine}</p>
-                </div>
-              </div>`
-  }
-  contenedor.innerHTML = cajas;
-}
-
-function meteoritosTable() {
-  let cajas = '';
-  let contenedor = document.getElementById('resultat');
-
-  for (let i=0; i<meteoritosData.length; i++) {
-    cajas += `<div class="box">
-                <img class="img" src=${meteoritosData[i].municipi_escut}>
-                <div class="specs">
-                  <p class="pSpecs"><span style="font-weight: bold">Id:</span> ${meteoritosData[i].id}</p>
-                  <p class="pSpecs"><span style="font-weight: bold">Name:</span> ${meteoritosData[i].name}</p>
-                  <p class="pSpecs"><span style="font-weight: bold">Mass:</span> ${meteoritosData[i].mass}</p>
-                </div>
-              </div>`
-  }
-  contenedor.innerHTML = cajas;
-}
-
-function moviesTable() {
-  let cajas = '';
-  let contenedor = document.getElementById('resultat');
-
-  for (let i=0; i<moviesData.length; i++) {
-    cajas += `<div class="box">
-                <img class="img" src=${moviesData[i].url}>
-                <div class="specs">
-                  <p class="pSpecs"><span style="font-weight: bold">Year:</span> ${moviesData[i].year}</p>
-                  <p class="pSpecs"><span style="font-weight: bold">Name:</span> ${moviesData[i].title}</p>
-                  <p class="pSpecs"><span style="font-weight: bold">Rating:</span> ${moviesData[i].rating}</p>
-                </div>
-              </div>`
-  }
-  contenedor.innerHTML = cajas;
 }
