@@ -18,7 +18,8 @@ let promiseArrays = Promise.all([
 ]).then(([dataPokemon, dataMunicipis, dataMeteorites, dataMovies]) => {
 
     dataPokemon.pokemon.forEach(dato => {
-      let newData = [dato.id, dato.img, dato.name, dato.weight];
+      let peso = dato.weight.split(' ')[0];
+      let newData = [dato.id, dato.img, dato.name, peso];
       pokemonsData.push(newData);
       pokemons.push(dato.name);
     });
@@ -61,10 +62,13 @@ let promiseArrays = Promise.all([
 // Creamos el array multidimensional una vez la promise que recoge los datos termina
 let multidimensional = [];
 let cabeceras = [];
+let tablaActual = '';
+let cabeceraActual = '';
 
 promiseArrays
 .then(resultado => {
   multidimensional = [pokemonsData, municipiosData, meteoritosData, moviesData];
+  
   // Creamos las cabeceras que iran en cada tabla
   cabeceras = [['ID', 'Img', 'Name', 'Weight'], ['INE', 'Img', 'Name', 'N.Hab'], ['ID', 'Name', 'Fall', 'Mass'], ['Year', 'Img', 'Title', 'Rating']];         
 
@@ -79,26 +83,72 @@ function refresh() {
 }
 
 function orderList(string) {
-  if (string == 'asc' || string == 'desc') {
-    // Lógica para ordenar la tabla
-  } else {
-    alert('Parámetro de orden inválido');
+  let nuevoOrden = '';
+  if (!tablaActual) {
+    alert('Selecciona una tabla');
     return;
+  } else {
+    if (string == 'asc') {
+      if (tablaActual[0][0] != '1') {
+        nuevoOrden = tablaActual.reverse();
+      }
+      printList(0, nuevoOrden);
+    } else {
+      if (tablaActual[0][0] == '1') {
+        nuevoOrden = tablaActual.reverse();
+      }
+      printList(0, nuevoOrden);
+    }
   }
 }
 
 function searchList() {
+  if (!tablaActual) {
+    alert('Selecciona una tabla');
+    return;
+  }
+  let buscador = parseInt(prompt('Introduce la posición del elemento que quieres buscar'));
+  let elemento = tablaActual[buscador];
 
+  // Mostramos el elemento encontrado
+  let contenedor = document.getElementById('resultat');
+  let estructura = `<table id="tabla">
+                      <tr id="cabecera">
+                        <th>${cabeceraActual[0]}</th>
+                        <th>${cabeceraActual[1]}</th>
+                        <th>${cabeceraActual[2]}</th>
+                        <th>${cabeceraActual[3]}</th>
+                      </tr>`;
+  let nuevosDatos = `<tr>
+                        <td>${elemento[0]}</td>
+                        <td><img src="${elemento[1]}"></td>
+                        <td>${elemento[2]}</td>
+                        <td>${elemento[3]}</td>
+                      </tr>`;
+  contenedor.innerHTML = estructura + nuevosDatos;
 }
 
 function calcula() {
+  // Calcula la mediana del valor último de la tabla.
+  let totalValores = 0;
 
+  tablaActual.forEach(datos => {
+    totalValores += parseInt(datos[3]);
+  })
+
+  alert(`La mediana es: ${(totalValores/tablaActual.length).toFixed(2)}`);
 }
 
-function printList(numTable) {
+function printList(numTable, orderList) {
   let contenedor = document.getElementById('resultat');
-  let tablaActual = multidimensional[numTable];
-  let cabeceraActual = cabeceras[numTable];
+
+  if (!orderList) {
+    tablaActual = multidimensional[numTable];
+    cabeceraActual = cabeceras[numTable];
+  } else {
+    tablaActual = orderList;
+  }
+
   let estructura = `<table id="tabla">
                       <tr id="cabecera">
                         <th>${cabeceraActual[0]}</th>
@@ -122,3 +172,7 @@ function printList(numTable) {
   contenedor.innerHTML = estructura + estructuraDatos + '</table>';
 
 }
+
+
+/* PASO 2: Creación de un gráfico a través de la libreria Chart.js */
+
