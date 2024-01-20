@@ -10,6 +10,8 @@ let municipios = [];
 let meteoritos = [];
 let movies = [];
 
+let tiposPokemons = [];
+
 let promiseArrays = Promise.all([
     fetch("js/data/pokemon.json").then(response => response.json()),
     fetch("js/data/municipis.json").then(response => response.json()),
@@ -22,6 +24,9 @@ let promiseArrays = Promise.all([
       let newData = [dato.id, dato.img, dato.name, peso];
       pokemonsData.push(newData);
       pokemons.push(dato.name);
+      dato.type.forEach(tipo => {
+        tiposPokemons.push(tipo);
+      })
     });
       
     dataMunicipis.elements.forEach(dato => {
@@ -64,13 +69,17 @@ let multidimensional = [];
 let cabeceras = [];
 let tablaActual = '';
 let cabeceraActual = '';
+let tipos = [];
 
 promiseArrays
 .then(resultado => {
   multidimensional = [pokemonsData, municipiosData, meteoritosData, moviesData];
   
   // Creamos las cabeceras que iran en cada tabla
-  cabeceras = [['ID', 'Img', 'Name', 'Weight'], ['INE', 'Img', 'Name', 'N.Hab'], ['ID', 'Name', 'Fall', 'Mass'], ['Year', 'Img', 'Title', 'Rating']];         
+  cabeceras = [['ID', 'Img', 'Name', 'Weight'], ['INE', 'Img', 'Name', 'N.Hab'], ['ID', 'Name', 'Fall', 'Mass'], ['Year', 'Img', 'Title', 'Rating']];     
+  
+  // Filtramos los repetidos del array de los tipos
+  tipos = [...new Set(tiposPokemons)];
 
   })
   .catch(error => {
@@ -175,4 +184,41 @@ function printList(numTable, orderList) {
 
 
 /* PASO 2: Creación de un gráfico a través de la libreria Chart.js */
+function grafico() {
+  const ctx = document.getElementById('myChart');
 
+  new Chart(ctx, {
+    type: 'polarArea',
+    data: {
+      labels: tipos,
+      datasets: [{
+        data: cantidadTipos(),
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
+function cantidadTipos() {
+  // Aquí crearemos un array con las cantidades que hay de cada tipo de Pokemon en nuestros datos
+  let cantidades = [];
+
+  tipos.forEach(tipo => {
+    let cantidad = 0;
+    tiposPokemons.forEach(tipoPokemon => {
+      if (tipo == tipoPokemon) {
+        cantidad++;
+      }
+    })
+    cantidades.push(cantidad);
+  })
+
+  return cantidades;
+}
