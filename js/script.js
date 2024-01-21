@@ -131,7 +131,45 @@ promiseArrays
 
     }); 
 
-    
+    /* PASO 4:  de array multidimensional a array multidimensional de objetos */
+    let multidimensionalObj = [];
+    multidimensional[0].forEach(array => {
+      let newObject = {
+        id: array[0],
+        name: array[1],
+        img: array[2],
+        weight: array[3]
+      };
+      multidimensionalObj.push(newObject);
+    })
+    multidimensional[1].forEach(array => {
+      let newObject = {
+        ine: array[0],
+        img: array[1],
+        name: array[2],
+        hab: array[3]
+      };
+      multidimensionalObj.push(newObject);
+    })
+    multidimensional[2].forEach(array => {
+      let newObject = {
+        id: array[0],
+        name: array[1],
+        fall: array[2],
+        mass: array[3]
+      };
+      multidimensionalObj.push(newObject);
+    })
+    multidimensional[3].forEach(array => {
+      let newObject = {
+        year: array[0],
+        img: array[1],
+        title: array[2],
+        rating: array[3]
+      };
+      multidimensionalObj.push(newObject);
+    })
+    /* ######################################################################33 */
   })
   .catch(error => {
     console.error("Promesa rechazada:", error);
