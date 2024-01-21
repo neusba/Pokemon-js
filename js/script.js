@@ -81,6 +81,57 @@ promiseArrays
   // Filtramos los repetidos del array de los tipos
   tipos = [...new Set(tiposPokemons)];
 
+  /* PASO 3: Modificar funciones para que funcionen con arrays multidimensionales */
+  /* Buscador en tiempo real */
+  let inputSearch = document.getElementById('txtSearch')
+  let coincidencias = [];
+
+  inputSearch.addEventListener('input', function(event) {
+    let valor = event.target.value;
+    if (!tablaActual) {
+      alert('Selecciona una tabla');
+      return;
+    }
+    // Creamos el string con todas las coincidencias del array multidimensional
+    multidimensional.forEach(array => {
+      array.forEach(datos => {
+        datos.forEach(dato => {
+          if (dato !== undefined) {
+            if (dato.toString().includes(valor)) {
+              coincidencias.push(datos)
+            }
+          }
+        })
+      })
+    })
+    // Mostramos los elementos encontrados
+    let contenedor = document.getElementById('resultat');
+    let estructura = `<table id="tabla">
+                        <tr id="cabecera">
+                          <th>${cabeceraActual[0]}</th>
+                          <th>${cabeceraActual[1]}</th>
+                          <th>${cabeceraActual[2]}</th>
+                          <th>${cabeceraActual[3]}</th>
+                        </tr>`;
+    // Recorremos el array correspondiente para añadir los datos a la tabla
+    let estructuraDatos = '';
+
+    coincidencias.forEach(datos => {
+      let nuevosDatos = `<tr>
+                          <td>${datos[0]}</td>
+                          <td><img src="${datos[1]}"></td>
+                          <td>${datos[2]}</td>
+                          <td>${datos[3]}</td>
+                        </tr>`;
+      estructuraDatos += nuevosDatos;
+    })
+
+    contenedor.innerHTML = estructura + estructuraDatos + '</table>';
+    coincidencias = '';
+
+    }); 
+
+    
   })
   .catch(error => {
     console.error("Promesa rechazada:", error);
@@ -222,3 +273,5 @@ function cantidadTipos() {
 
   return cantidades;
 }
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
